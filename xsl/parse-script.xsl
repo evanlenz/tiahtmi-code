@@ -46,9 +46,13 @@
 
   <xsl:template mode="cleanup" match="@* | node()">
     <xsl:copy>
-      <xsl:apply-templates mode="#current" select="@* | node()"/>
+      <xsl:apply-templates mode="#current" select="@*"/>
+      <xsl:apply-templates mode="cleanup-insert" select="."/>
+      <xsl:apply-templates mode="#current"/>
     </xsl:copy>
   </xsl:template>
+
+          <xsl:template mode="cleanup-insert" match="*"/>
 
   <xsl:template mode="cleanup" match="stanza[not(node())]" priority="1"/>
 
@@ -61,6 +65,10 @@
   <xsl:template mode="cleanup" match="stanza[starts-with(line[1], '(')]
                                             [ends-with(line[last()], ')')]">
     <stage directions="{string-join(line, ' ') ! substring-before(.,')') ! substring-after(.,'(')}"/>
+  </xsl:template>
+
+  <xsl:template mode="cleanup-insert" match="stanza">
+    <xsl:attribute name="id" select="generate-id(.)"/>
   </xsl:template>
 
   <xsl:template match="group[1]">

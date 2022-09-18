@@ -27,6 +27,14 @@
           .ELLEN .stanza { color: green; }
           .DEAN .stanza { color: purple; }
         </style>
+        <script>
+          function start(audioID) {
+             var next = document.getElementById(audioID)
+             next.currentTime = 0
+             next.playbackRate = 2
+             next.play()
+          }
+        </script>
       </head>
       <body>
         <xsl:apply-templates/>
@@ -68,6 +76,11 @@
 
   <xsl:template match="stanza">
     <div class="stanza">
+      <xsl:if test="not($visualization)">
+        <audio id="{@id}" controls="controls" onended="start('{following::stanza[1]/@id}')">
+          <source src="mp3-straight/{@id}.mp3" type="audio/mpeg"/>
+        </audio>
+      </xsl:if>
       <xsl:apply-templates select="line"/>
     </div>
   </xsl:template>
