@@ -28,11 +28,17 @@
           .DEAN .stanza { color: purple; }
         </style>
         <script>
+          window.onload = function() {
+            document.querySelectorAll('audio').forEach(function(el) {
+              el.playbackRate = 2
+            })
+          }
+
           function start(audioID) {
-             var next = document.getElementById(audioID)
-             next.currentTime = 0
-             next.playbackRate = 2
-             next.play()
+            var next = document.getElementById(audioID)
+            next.currentTime = 0
+            next.playbackRate = 2
+            next.play()
           }
         </script>
       </head>
