@@ -35,10 +35,12 @@
           }
 
           function start(audioID) {
-            var next = document.getElementById(audioID)
-            next.currentTime = 0
-            next.playbackRate = 2
-            next.play()
+            if (audioID !== '') {
+              var next = document.getElementById(audioID)
+              next.currentTime = 0
+              next.playbackRate = 2
+              next.play()
+            }
           }
         </script>
       </head>
