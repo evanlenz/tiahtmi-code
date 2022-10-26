@@ -77,7 +77,7 @@
         <xsl:value-of select="string-join($stanza/line/tokenize(.,' ')[last()] ! my:strip-punctuation(.), ',')"/>
       </xsl:when>
       <xsl:when test="$speech-type eq 'two-line-cues'">
-        <xsl:value-of select="string-join($stanza/line[position() = (last(),last() - 1)], ' ')"/>
+        <xsl:value-of select="string-join($stanza/line[position() ge last()-1]/my:strip-punctuation(.), ' ')"/>
       </xsl:when>
       <xsl:when test="$speech-type eq 'one-line-cues'">
         <xsl:value-of select="$stanza/line[last()] ! my:strip-punctuation(.)"/>
