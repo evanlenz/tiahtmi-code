@@ -12,6 +12,9 @@ it stop. Playback will automatically continue to the next block.
 
 Customize each character's speech using the controls at the top of the page.
 
+The blocks are color-coded by character (blue for Bernard,
+green for Ellen, and purple for Dean).
+
 ## Features
 
 Each character's speech characteristics can be controlled independently:
