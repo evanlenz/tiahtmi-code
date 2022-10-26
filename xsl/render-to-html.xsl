@@ -98,12 +98,14 @@
           }
           function toggleStanza(audioID) {
             var current = document.getElementById(audioID)
-            if (current.paused)
-              start(audioID)
-            else {
-              current.pause()
-              end(audioID)
+            if (current.paused) {
+              if (current.parentElement.classList.contains("highlighted"))
+                current.play()
+              else
+                start(audioID)
             }
+            else
+              current.pause()
           }
           function start(audioID) {
             document.querySelectorAll('audio').forEach(function(el) {
