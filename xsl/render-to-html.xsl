@@ -33,7 +33,7 @@
           #controls { height: 110px; column-count: <xsl:value-of select="count($characters)"/> }
           #play_script { position: absolute; top: 110px; left: 0; right: 0; bottom: 0;
                          overflow: auto; column-count: 15;
-                         font-size: .05em;
+                         font-size: 3.54pt;
                        }
 
           .stanza { margin-top: 1em; margin-bottom: 1em }
