@@ -1,4 +1,4 @@
-# Memorization aid for "There Is a Happiness That Morning Is"
+# Memorization aid for _There Is a Happiness That Morning Is_
 
 This utility generates a browser-based memorization aid for
 Mickle Maher's play, [_There Is a Happiness That Morning Is_](http://sixplaysmicklemaher.com/there-is-a-happiness-that-morning-is/).
@@ -42,7 +42,7 @@ and the [Saxon-HE XSLT processor](https://saxonica.com/products/products.xml) to
   3. generate the scripts for invoking Polly, and
   4. generate the final HTML page.
 
-The script started as PDF file. I used an online utility to extract its text and then
+The script started as a PDF file. I used an online utility to extract its text and then
 manually cleaned up the text file (especially by adding blank lines between "stanzas").
 
 ## Future work
