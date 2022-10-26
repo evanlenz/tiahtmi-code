@@ -36,7 +36,7 @@
                          font-size: 3.54pt;
                        }
 
-          .stanza { margin-top: 1em; margin-bottom: 1em }
+          .stanza { cursor: pointer; margin-top: 1em; margin-bottom: 1em }
 
           <xsl:for-each select="$characters" expand-text="yes">
             .{@name} .stanza {{ background-color: rgb({@red}, {@green}, {@blue}) }}
