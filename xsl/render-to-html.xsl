@@ -13,7 +13,7 @@
 
   <xsl:param name="speech-styles" as="element(speech)+">
     <speech style="straight"/>
-    <speech style="no-punctuation"/>
+    <speech style="no-punctuation" default="yes"/>
     <speech style="last-word-only"/>
     <speech style="two-line-cues"/>
     <speech style="one-line-cues"/>
@@ -148,6 +148,9 @@
                 <select id="speech_style_{@name}" onchange="updateSpeechStyle('{@name}')">
                   <xsl:for-each select="$speech-styles">
                     <option>
+                      <xsl:if test="@default eq 'yes'">
+                        <xsl:attribute name="selected" select="'selected'"/>
+                      </xsl:if>
                       <xsl:value-of select="@style"/>
                     </option>
                   </xsl:for-each>
