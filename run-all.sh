@@ -3,7 +3,6 @@ cd build
 
 java -cp "$CLASSPATH" net.sf.saxon.Transform -xsl:../xsl/parse-script.xsl -s:../xsl/parse-script.xsl -o:script.xml script-file-name=../source/ThereIsAHappiness.doc.txt
 java -cp "$CLASSPATH" net.sf.saxon.Transform -xsl:../xsl/render-to-html.xsl -s:script.xml -o:../output/tiahtmi.html title='There Is a Happiness That Morning Is'
-java -cp "$CLASSPATH" net.sf.saxon.Transform -xsl:../xsl/render-to-html.xsl -s:script.xml -o:../output/tiahtmi-viz.html title='There Is a Happiness That Morning Is' visualization=yes
 java -cp "$CLASSPATH" net.sf.saxon.Transform -xsl:../xsl/generate-aws-cli-script.xsl -s:script.xml
 
 mkdir -p ../output/mp3-straight

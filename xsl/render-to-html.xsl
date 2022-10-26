@@ -5,8 +5,6 @@
 
   <xsl:param name="title"/>
 
-  <xsl:param name="visualization" select="false()"/>
-
   <xsl:param name="characters" as="element(character)+">
     <character name="BERNARD" red="0" green="0" blue="255"/>
     <character name="ELLEN" red="0" green="128" blue="0"/>
@@ -34,17 +32,15 @@
 
           #controls { height: 110px; column-count: <xsl:value-of select="count($characters)"/> }
           #play_script { position: absolute; top: 110px; left: 0; right: 0; bottom: 0;
-                         overflow: auto; font-size: .05em;
-                         <xsl:if test="$visualization">column-count: 15;</xsl:if>
+                         overflow: auto; column-count: 15;
+                         font-size: .05em;
                        }
 
           .stanza { margin-top: 1em; margin-bottom: 1em }
 
-          <xsl:if test="$visualization">
-            <xsl:for-each select="$characters" expand-text="yes">
-              .{@name} .stanza {{ background-color: rgb({@red}, {@green}, {@blue}) }}
-            </xsl:for-each>
-          </xsl:if>
+          <xsl:for-each select="$characters" expand-text="yes">
+            .{@name} .stanza {{ background-color: rgb({@red}, {@green}, {@blue}) }}
+          </xsl:for-each>
 
           #controls { font-weight: bold }
 
@@ -97,10 +93,8 @@
           }
 
           function end(audioID) {
-            <xsl:if test="$visualization">
-              var current = document.getElementById(audioID)
-              current.parentElement.classList.remove("highlighted")
-            </xsl:if>
+            var current = document.getElementById(audioID)
+            current.parentElement.classList.remove("highlighted")
           }
           function toggleStanza(audioID) {
             var current = document.getElementById(audioID)
@@ -120,9 +114,7 @@
               var next = document.getElementById(audioID)
               next.currentTime = 0
               next.play()
-              <xsl:if test="$visualization">
-                next.parentElement.classList.add("highlighted")
-              </xsl:if>
+              next.parentElement.classList.add("highlighted")
             }
           }
         </script>
@@ -197,14 +189,8 @@
   </xsl:template>
 
   <xsl:template match="stanza">
-    <div class="stanza">
-      <xsl:if test="$visualization">
-        <xsl:attribute name="onclick">toggleStanza('<xsl:value-of select="@id"/>')</xsl:attribute>
-      </xsl:if>
+    <div class="stanza" onclick="toggleStanza('{@id}')">
       <audio id="{@id}" class="audio_{../@speaker}" onended="end('{@id}'); start('{following::stanza[1]/@id}')">
-        <xsl:if test="not($visualization)">
-          <xsl:attribute name="controls" select="'controls'"/>
-        </xsl:if>
         <source type="audio/mpeg"/>
       </audio>
       <xsl:apply-templates select="line"/>
