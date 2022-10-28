@@ -20,6 +20,8 @@
     <speech style="line-boundaries"/>
   </xsl:param>
 
+  <xsl:variable name="first-stanza-id" select="string((//stanza)[1]/@id)"/>
+
   <xsl:template match="/">
     <html>
       <head>
@@ -53,9 +55,14 @@
             }}
           </xsl:for-each>
 
-          .highlighted { border-color: black; border-width: 15px; border-style: solid }
+          .playing,
+          .paused  { border-width: 5px; border-style: solid }
+          .playing { border-color: #00FF00; }
+          .paused  { border-color: #FF0000; }
         </style>
         <script>
+
+          var currentAudioID = "<xsl:value-of select="$first-stanza-id"/>";
 
           // https://stackoverflow.com/a/31133401/98316
           Object.defineProperty(HTMLMediaElement.prototype, 'playing', {
@@ -92,31 +99,79 @@
             </xsl:for-each>
           }
 
-          function end(audioID) {
-            var current = document.getElementById(audioID)
-            current.parentElement.classList.remove("highlighted")
-          }
           function toggleStanza(audioID) {
-            var current = document.getElementById(audioID)
-            if (current.paused) {
-              if (current.parentElement.classList.contains("highlighted"))
-                current.play()
-              else
-                start(audioID)
-            }
+            if (audioID === currentAudioID)
+              togglePlay()
             else
+              start(audioID)
+          }
+          function togglePlay() {
+            let current = document.getElementById(currentAudioID)
+            if (current.paused) {
+              current.play()
+              showPlaying()
+            } else {
               current.pause()
+              showPaused()
+            }
+          }
+          function showPlaying() {
+            let current = document.getElementById(currentAudioID)
+            current.parentElement.classList.remove("paused")
+            current.parentElement.classList.add("playing")
+          }
+          function showPaused() {
+            let current = document.getElementById(currentAudioID)
+            current.parentElement.classList.remove("playing")
+            current.parentElement.classList.add("paused")
+          }
+          function stop() {
+            let current = document.getElementById(currentAudioID)
+            current.pause()
+            current.currentTime = 0
           }
           function start(audioID) {
-            document.querySelectorAll('audio').forEach(function(el) {
-              el.pause();
-              el.parentElement.classList.remove("highlighted")
-            });
-            if (audioID !== '') {
-              var next = document.getElementById(audioID)
-              next.currentTime = 0
-              next.play()
-              next.parentElement.classList.add("highlighted")
+            stop()
+            if (audioID !== currentAudioID) {
+              let current = document.getElementById(currentAudioID)
+              current.parentElement.classList.remove("playing", "paused")
+              currentAudioID = audioID
+            }
+            togglePlay()
+          }
+          function previousClip() {
+            let current = document.getElementById(currentAudioID)
+            let previousID = current.dataset.previous
+            if (previousID)
+              start(previousID)
+            else
+              start(currentAudioID)  // only at the beginning of the play
+          }
+          function nextClip() {
+            let current = document.getElementById(currentAudioID);
+            let nextID = current.dataset.next
+            if (nextID)
+              start(nextID)
+            else {
+              stop()
+              showPaused()  // only at the end of the play
+            }
+          }
+
+          window.onkeydown = function(event) {
+            switch (event.key) {
+              case " ":
+                event.preventDefault();
+                togglePlay();
+                break;
+              case "ArrowDown":
+                event.preventDefault();
+                nextClip();
+                break;
+              case "ArrowUp":
+                event.preventDefault();
+                previousClip();
+                break;
             }
           }
         </script>
@@ -194,8 +249,13 @@
   </xsl:template>
 
   <xsl:template match="stanza">
-    <div class="stanza" onclick="toggleStanza('{@id}')">
-      <audio id="{@id}" class="audio_{../@speaker}" onended="end('{@id}'); start('{following::stanza[1]/@id}')">
+    <div onclick="toggleStanza('{@id}')"
+         class="stanza{if (@id eq $first-stanza-id) then ' paused' else ''}">
+      <audio id="{@id}"
+             class="audio_{../@speaker}"
+             data-previous="{preceding::stanza[1]/@id}"
+             data-next="{following::stanza[1]/@id}"
+             onended="nextClip()">
         <source type="audio/mpeg"/>
       </audio>
       <xsl:apply-templates select="line"/>
