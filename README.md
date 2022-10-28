@@ -10,6 +10,9 @@ Mickle Maher's play, [_There Is a Happiness That Morning Is_](http://sixplaysmic
 Click a colored block of text to hear it spoken aloud. Click it again to make
 it stop. Playback will automatically continue to the next block.
 
+You can also use the SPACE bar to pause and restart playback, and the UP and
+DOWN arrow keys to jump back or forward through the play.
+
 Customize each character's speech using the controls at the top of the page.
 
 The blocks are color-coded by character (blue for Bernard,
